@@ -127,12 +127,14 @@ def main():
 
     board_window = BoardWindow(width=WIDTH, height=HEIGHT, title="Snake")
 
+    N = 40
+
     board = Board(
         board_window=board_window,
         color1=YELLOW,
         color2=BLUE,
-        rows=10,
-        cols=10,
+        rows=N,
+        cols=N,
     )
 
     while run:
