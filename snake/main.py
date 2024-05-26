@@ -14,6 +14,10 @@ pygame.display.set_caption("Snake")
 # Colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
+GREEN = (0, 255, 0)
+RED = (255, 0, 0)
+BLUE = (0, 0, 255)
+YELLOW = (255, 255, 0)
 
 # Constants
 ROWS, COLS = 10, 10
@@ -37,11 +41,44 @@ def draw_grid():
         None
     """
     WIN.fill(WHITE)
-    for row in range(ROWS):
-        for col in range(COLS):
+    for row in range(0, ROWS, 2):
+        for col in range(0, COLS, 2):
             rect = pygame.Rect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE)
-            pygame.draw.rect(WIN, BLACK, rect, 1)
+            pygame.draw.rect(WIN, BLACK, rect)
+            # pygame.draw.rect(WIN, YELLOW, rect, 1)
+            # pygame.draw.rect(WIN, GREEN, rect.move(10, 10), 1)
+            # pygame.draw.rect(WIN, RED, rect.move(20, 20), 0)
+
+    # Print some text on the screen
+    font = pygame.font.Font(None, 36)  # name, size
+    draw_text("Snake", font, BLACK, WIN, WIDTH // 2, 30)
+
     pygame.display.update()
+
+
+def draw_text(text, font, color, surface, x, y):
+    """
+    Draws text on the game window.
+
+    This function takes the text, font, color, surface, x, and y coordinates as input and draws the text on the game window.
+
+    It uses the render function from the pygame.font module to render the text.
+
+    Parameters:
+        text (str): The text to be displayed.
+        font (pygame.font.Font): The font to be used for the text.
+        color (tuple): The color of the text in RGB format.
+        surface (pygame.Surface): The surface on which the text is to be drawn.
+        x (int): The x-coordinate of the text.
+        y (int): The y-coordinate of the text.
+
+    Returns:
+        None
+    """
+    text_surface = font.render(text, True, color)
+    text_rect = text_surface.get_rect()
+    text_rect.center = (x, y)
+    surface.blit(text_surface, text_rect)
 
 
 # Main loop
