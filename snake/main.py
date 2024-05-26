@@ -35,7 +35,8 @@ class BoardWindow:
         pygame.display.set_caption(title)
 
     def draw(self):
-        pygame.display.update()
+        # pygame.display.update()
+        pass  # Do nothing for now
 
 
 class Board:
@@ -114,7 +115,7 @@ class LetterBoard(Board):
         text_rect.center = (x, y)
         self.board_window.surface.blit(text_surface, text_rect)
 
-        pygame.display.update()
+        # pygame.display.update()
 
 
 def draw_text(text, font, color, surface, x, y):
@@ -166,13 +167,16 @@ def main():
                 if event.key == pygame.K_q:
                     run = False
 
+        board.draw()
+
         # draw_grid()
         for letter, index in zip("ABCDEFGHIJKLMNOPQRSTUVWXYZ", range(10)):
             row = index // N
             col = index % N
             board.draw_letter(letter, row, col)
         # board.draw_letter("A", 0, 0)
-        board.draw()
+
+        pygame.display.update()
 
     pygame.quit()
     sys.exit()
