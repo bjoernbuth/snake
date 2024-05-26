@@ -15,6 +15,7 @@ BLACK = (0, 0, 0)
 
 # Constants
 SQUARE_SIZE = 20
+# SPEED = 5
 SPEED = 5
 
 
@@ -77,7 +78,7 @@ def main():
         pygame.display.update()
 
         # Control the frame rate
-        clock.tick(30)
+        clock.tick(60)
 
     pygame.quit()
     sys.exit()
