@@ -54,7 +54,7 @@ def draw_grid():
 
     # Print some text on the screen
     font = pygame.font.Font(None, 36)  # name, size
-    draw_text("Snake", font, BLACK, WIN, WIDTH // 2, 30)
+    # draw_text("Snake", font, BLACK, WIN, WIDTH // 2, 30)
 
     pygame.display.update()
 
