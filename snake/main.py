@@ -43,56 +43,57 @@ class Board:
 
     def __init__(
         self,
-        surface,
+        board_window: BoardWindow,
         color1=BLACK,
         color2=GREEN,
         rows=ROWS,
         cols=COLS,
-        cell_size=CELL_SIZE,
     ):
-        self.surface = surface
+        self.board_window = board_window
         self.color1 = color1
         self.color2 = color2
-        self.rows = (ROWS,)
-        self.cols = (COLS,)
+        self.rows = rows
+        self.cols = cols
+
+        self.cell_with = self.board_window.width // self.cols
+        self.cell_height = self.board_window.height // self.rows
+        self.cw = self.cell_with
+        self.ch = self.cell_height
 
     def draw(self):
-        draw_grid(self.color1, self.color2)
+        self.draw_grid(self.board_window.surface, self.color1, self.color2)
 
+    # Function to draw the grid
+    def draw_grid(self, surface: pygame.Surface, color1=BLACK, color2=GREEN):
+        """
+        Draws a grid on the game window.
 
-# Function to draw the grid
-def draw_grid(surface: pygame.Surface, color1=BLACK, color2=GREEN):
-    """
-    Draws a grid on the game window.
+        This function fills the game window with a white color and then draws a grid of black rectangles on it.
+        Each rectangle represents a cell in the grid.
 
-    This function fills the game window with a white color and then draws a grid of black rectangles on it.
-    Each rectangle represents a cell in the grid.
+        It uses the fill and draw.rect functions from the pygame module to draw the grid.
 
-    It uses the fill and draw.rect functions from the pygame module to draw the grid.
+        Parameters:
+            None
 
-    Parameters:
-        None
+        Returns:
+            None
+        """
 
-    Returns:
-        None
-    """
-    WIN.fill(WHITE)
-    for row in range(0, ROWS, 1):
-        for col in range(0, COLS, 1):
-            rect = pygame.Rect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE)
-            if (row + col) % 2 == 0:
-                pygame.draw.rect(WIN, color1, rect)
-            else:
-                pygame.draw.rect(WIN, color2, rect)
-            # pygame.draw.rect(WIN, YELLOW, rect, 1)
-            # pygame.draw.rect(WIN, GREEN, rect.move(CELL_SIZE, 0), 0)
-            # pygame.draw.rect(WIN, RED, rect.move(20, 20), 0)
+        self.board_window.surface.fill(WHITE)
+        for row in range(0, self.rows, 1):
+            for col in range(0, self.cols, 1):
+                rect = pygame.Rect(col * self.cw, row * self.ch, self.cw, self.ch)
+                if (row + col) % 2 == 0:
+                    pygame.draw.rect(self.board_window.surface, color1, rect)
+                else:
+                    pygame.draw.rect(self.board_window.surface, color2, rect)
 
-    # Print some text on the screen
-    font = pygame.font.Font(None, 36)  # name, size
-    # draw_text("Snake", font, BLACK, WIN, WIDTH // 2, 30)
+        # Print some text on the screen
+        font = pygame.font.Font(None, 36)  # name, size
+        # draw_text("Snake", font, BLACK, WIN, WIDTH // 2, 30)
 
-    pygame.display.update()
+        pygame.display.update()
 
 
 def draw_text(text, font, color, surface, x, y):
@@ -124,7 +125,15 @@ def draw_text(text, font, color, surface, x, y):
 def main():
     run = True
 
-    board = Board(surface=WIN, color1=YELLOW, color2=BLUE)
+    board_window = BoardWindow(width=WIDTH, height=HEIGHT, title="Snake")
+
+    board = Board(
+        board_window=board_window,
+        color1=YELLOW,
+        color2=BLUE,
+        rows=10,
+        cols=10,
+    )
 
     while run:
         for event in pygame.event.get():
