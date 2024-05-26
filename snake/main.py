@@ -143,6 +143,17 @@ def draw_text(text, font, color, surface, x, y):
     surface.blit(text_surface, text_rect)
 
 
+def handle_events():
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            return False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_q:
+                return False
+
+    return True
+
+
 # Main loop
 def main():
     run = True
@@ -160,17 +171,18 @@ def main():
     )
 
     while run:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_q:
-                    run = False
+        run = handle_events()
+        if not run:
+            break
 
         board.draw()
 
         # draw_grid()
         for letter, index in zip("ABCDEFGHIJKLMNOPQRSTUVWXYZ", range(10)):
+            if not handle_events():
+                run = False  # Exit the main loop
+                break
+                # continue (skip the letter and go to the next one)
             row = index // N
             col = index % N
             board.draw_letter(letter, row, col)
