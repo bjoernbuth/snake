@@ -1,4 +1,9 @@
+"""
+Currently run a a 5x5 board and print letters onto the board.
+"""
+
 # Create a simple 10x10 grid using pygame and display it on the screen.
+
 
 import pygame
 import sys
