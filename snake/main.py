@@ -24,8 +24,19 @@ ROWS, COLS = 10, 10
 CELL_SIZE = WIDTH // ROWS
 
 
+class Board:
+    """A class to represent a game board."""
+
+    def __init__(self, color1=BLACK, color2=GREEN):
+        self.color1 = color1
+        self.color2 = color2
+
+    def draw(self):
+        draw_grid(self.color1, self.color2)
+
+
 # Function to draw the grid
-def draw_grid():
+def draw_grid(color1=BLACK, color2=GREEN):
     """
     Draws a grid on the game window.
 
@@ -45,9 +56,9 @@ def draw_grid():
         for col in range(0, COLS, 1):
             rect = pygame.Rect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE)
             if (row + col) % 2 == 0:
-                pygame.draw.rect(WIN, BLACK, rect)
+                pygame.draw.rect(WIN, color1, rect)
             else:
-                pygame.draw.rect(WIN, GREEN, rect)
+                pygame.draw.rect(WIN, color2, rect)
             # pygame.draw.rect(WIN, YELLOW, rect, 1)
             # pygame.draw.rect(WIN, GREEN, rect.move(CELL_SIZE, 0), 0)
             # pygame.draw.rect(WIN, RED, rect.move(20, 20), 0)
@@ -87,6 +98,9 @@ def draw_text(text, font, color, surface, x, y):
 # Main loop
 def main():
     run = True
+
+    board = Board(color1=YELLOW, color2=BLUE)
+
     while run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -95,7 +109,8 @@ def main():
                 if event.key == pygame.K_q:
                     run = False
 
-        draw_grid()
+        # draw_grid()
+        board.draw()
 
     pygame.quit()
     sys.exit()
