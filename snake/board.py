@@ -2,6 +2,7 @@
 
 import pygame
 import sys
+import itertools
 
 # Initialize Pygame
 pygame.init()
@@ -94,19 +95,20 @@ class Board:
         font = pygame.font.Font(None, 36)  # name, size
         # draw_text("Snake", font, BLACK, WIN, WIDTH // 2, 30)
 
-        # pygame.display.update()
-
 
 class LetterBoard(Board):
     """Allow writing letters on the board."""
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, font_size=36, **kwargs):
         super().__init__(*args, **kwargs)
+        self.font_size = font_size
 
-    def draw_letter(self, char, row, col, size=36):
+    def draw_letter(self, char, row, col, size=None):
+        if size is None:
+            size = self.font_size
         if not (0 <= row < self.rows and 0 <= col < self.cols):
             raise ValueError(f"Invalid row or column: {row}, {col}")
-        font = pygame.font.Font(None, 36)
+        font = pygame.font.Font(None, size)
         x = col * self.cw + self.cw // 2
         y = row * self.ch + self.ch // 2
         # draw_text(char, font, BLACK, self.board_window.surface, x, y)
@@ -114,8 +116,6 @@ class LetterBoard(Board):
         text_rect = text_surface.get_rect()
         text_rect.center = (x, y)
         self.board_window.surface.blit(text_surface, text_rect)
-
-        # pygame.display.update()
 
 
 def draw_text(text, font, color, surface, x, y):
@@ -154,13 +154,27 @@ def handle_events():
     return True
 
 
+def generate_positions(rows, cols):
+    """Define a generator to generate positions for the grid."""
+    for row in range(rows):
+        for col in range(cols):
+            yield row, col
+    return  # Stop the generator
+
+
+def generate_letters():
+    """Define a generator to generate letters and start over when reaching the end."""
+
+    return itertools.cycle("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+
 # Main loop
 def main():
     run = True
 
     board_window = BoardWindow(width=WIDTH, height=HEIGHT, title="Snake")
 
-    N = 10
+    N = 5
 
     board = LetterBoard(
         board_window=board_window,
@@ -168,6 +182,7 @@ def main():
         color2=GREEN,
         rows=N,
         cols=N,
+        font_size=36,
     )
 
     while run:
@@ -178,16 +193,17 @@ def main():
         board.draw()
 
         # draw_grid()
-        for letter, index in zip("ABCDEFGHIJKLMNOPQRSTUVWXYZ", range(10)):
+        # for letter, (row, col) in zip("ABCDEFGHIJKLMNOPQRSTUVWXYZ", generate_positions(N, N)):
+        for letter, (row, col) in zip(generate_letters(), generate_positions(N, N)):
             if not handle_events():
                 run = False  # Exit the main loop
                 break
                 # continue (skip the letter and go to the next one)
-            row = index // N
-            col = index % N
+            # row = index // N
+            # col = index % N
             board.draw_letter(letter, row, col)
             pygame.display.update()
-            pygame.time.delay(1000)
+            pygame.time.delay(100)
 
         # board.draw_letter("A", 0, 0)
 
@@ -199,3 +215,10 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+    def debug():
+        N = 4
+        for letter, (row, col) in zip(generate_letters(), generate_positions(N, N)):
+            print(row, col, letter)
+
+    # debug()
