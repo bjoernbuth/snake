@@ -24,19 +24,44 @@ ROWS, COLS = 10, 10
 CELL_SIZE = WIDTH // ROWS
 
 
+class BoardWindow:
+    """A class to represent the game window."""
+
+    def __init__(self, width=800, height=800, title="Snake"):
+        self.width = width
+        self.height = height
+        self.title = title
+        self.surface = pygame.display.set_mode((width, height))
+        pygame.display.set_caption(title)
+
+    def draw(self):
+        pygame.display.update()
+
+
 class Board:
     """A class to represent a game board."""
 
-    def __init__(self, color1=BLACK, color2=GREEN):
+    def __init__(
+        self,
+        surface,
+        color1=BLACK,
+        color2=GREEN,
+        rows=ROWS,
+        cols=COLS,
+        cell_size=CELL_SIZE,
+    ):
+        self.surface = surface
         self.color1 = color1
         self.color2 = color2
+        self.rows = (ROWS,)
+        self.cols = (COLS,)
 
     def draw(self):
         draw_grid(self.color1, self.color2)
 
 
 # Function to draw the grid
-def draw_grid(color1=BLACK, color2=GREEN):
+def draw_grid(surface: pygame.Surface, color1=BLACK, color2=GREEN):
     """
     Draws a grid on the game window.
 
@@ -99,7 +124,7 @@ def draw_text(text, font, color, surface, x, y):
 def main():
     run = True
 
-    board = Board(color1=YELLOW, color2=BLUE)
+    board = Board(surface=WIN, color1=YELLOW, color2=BLUE)
 
     while run:
         for event in pygame.event.get():
