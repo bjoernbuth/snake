@@ -33,14 +33,7 @@ logging.basicConfig(
 class MovingSquare:
     """A class to represent a moving square."""
 
-    def __init__(
-        self,
-        x,
-        y,
-        size,
-        color,
-        speed,
-    ):
+    def __init__(self, x, y, size, color, speed):
         self.x = x
         self.y = y
         self.size = size
@@ -63,39 +56,38 @@ class MovingSquare:
     def draw(self, surface):
         pygame.draw.rect(surface, self.color, (self.x, self.y, self.size, self.size))
 
-
-def handle_events(square):
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            return False
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_q:
+    def handle_events(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
                 return False
-            elif event.key == pygame.K_LEFT:
-                if (not square.dx > 0) and (not square.dy == 0):
-                    square.dx = -square.speed
-                    square.dy = 0
-                    square.direction = "left"
-                    logging.info(f"Direction: {square.direction}")
-            elif event.key == pygame.K_RIGHT:
-                if not square.direction == "left":
-                    square.dx = square.speed
-                    square.dy = 0
-                    square.direction = "right"
-                    logging.info(f"Direction: {square.direction}")
-            elif event.key == pygame.K_UP:
-                if not square.direction == "down":
-                    square.dy = -square.speed
-                    square.dx = 0
-                    square.direction = "up"
-                    logging.info(f"Direction: {square.direction}")
-            elif event.key == pygame.K_DOWN:
-                if not square.direction == "up":
-                    square.dy = square.speed
-                    square.dx = 0
-                    square.direction = "down"
-                    logging.info(f"Direction: {square.direction}")
-    return True
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_q:
+                    return False
+                elif event.key == pygame.K_LEFT:
+                    if (not self.dx > 0) and (not self.dy == 0):
+                        self.dx = -self.speed
+                        self.dy = 0
+                        self.direction = "left"
+                        logging.info(f"Direction: {self.direction}")
+                elif event.key == pygame.K_RIGHT:
+                    if not self.direction == "left":
+                        self.dx = self.speed
+                        self.dy = 0
+                        self.direction = "right"
+                        logging.info(f"Direction: {self.direction}")
+                elif event.key == pygame.K_UP:
+                    if not self.direction == "down":
+                        self.dy = -self.speed
+                        self.dx = 0
+                        self.direction = "up"
+                        logging.info(f"Direction: {self.direction}")
+                elif event.key == pygame.K_DOWN:
+                    if not self.direction == "up":
+                        self.dy = self.speed
+                        self.dx = 0
+                        self.direction = "down"
+                        logging.info(f"Direction: {self.direction}")
+        return True
 
 
 # Main loop
@@ -106,7 +98,7 @@ def main():
     square = MovingSquare(x=WIDTH // 2, y=HEIGHT // 2, size=SQUARE_SIZE, color=BLACK, speed=SPEED)
 
     while run:
-        run = handle_events(square)
+        run = square.handle_events()
         if not run:
             break
 
