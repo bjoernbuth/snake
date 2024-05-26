@@ -41,12 +41,15 @@ def draw_grid():
         None
     """
     WIN.fill(WHITE)
-    for row in range(0, ROWS, 2):
-        for col in range(0, COLS, 2):
+    for row in range(0, ROWS, 1):
+        for col in range(0, COLS, 1):
             rect = pygame.Rect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE)
-            pygame.draw.rect(WIN, BLACK, rect)
+            if (row + col) % 2 == 0:
+                pygame.draw.rect(WIN, BLACK, rect)
+            else:
+                pygame.draw.rect(WIN, GREEN, rect)
             # pygame.draw.rect(WIN, YELLOW, rect, 1)
-            # pygame.draw.rect(WIN, GREEN, rect.move(10, 10), 1)
+            # pygame.draw.rect(WIN, GREEN, rect.move(CELL_SIZE, 0), 0)
             # pygame.draw.rect(WIN, RED, rect.move(20, 20), 0)
 
     # Print some text on the screen
