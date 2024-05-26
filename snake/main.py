@@ -93,6 +93,27 @@ class Board:
         font = pygame.font.Font(None, 36)  # name, size
         # draw_text("Snake", font, BLACK, WIN, WIDTH // 2, 30)
 
+        # pygame.display.update()
+
+
+class LetterBoard(Board):
+    """Allow writing letters on the board."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def draw_letter(self, char, row, col, size=36):
+        if not (0 <= row < self.rows and 0 <= col < self.cols):
+            raise ValueError(f"Invalid row or column: {row}, {col}")
+        font = pygame.font.Font(None, 36)
+        x = col * self.cw + self.cw // 2
+        y = row * self.ch + self.ch // 2
+        # draw_text(char, font, BLACK, self.board_window.surface, x, y)
+        text_surface = font.render(char, True, BLACK)
+        text_rect = text_surface.get_rect()
+        text_rect.center = (x, y)
+        self.board_window.surface.blit(text_surface, text_rect)
+
         pygame.display.update()
 
 
@@ -127,12 +148,12 @@ def main():
 
     board_window = BoardWindow(width=WIDTH, height=HEIGHT, title="Snake")
 
-    N = 40
+    N = 10
 
-    board = Board(
+    board = LetterBoard(
         board_window=board_window,
         color1=YELLOW,
-        color2=BLUE,
+        color2=GREEN,
         rows=N,
         cols=N,
     )
@@ -146,6 +167,11 @@ def main():
                     run = False
 
         # draw_grid()
+        for letter, index in zip("ABCDEFGHIJKLMNOPQRSTUVWXYZ", range(10)):
+            row = index // N
+            col = index % N
+            board.draw_letter(letter, row, col)
+        # board.draw_letter("A", 0, 0)
         board.draw()
 
     pygame.quit()
