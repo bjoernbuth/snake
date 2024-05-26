@@ -174,6 +174,9 @@ def main():
             row = index // N
             col = index % N
             board.draw_letter(letter, row, col)
+            pygame.display.update()
+            pygame.time.delay(1000)
+
         # board.draw_letter("A", 0, 0)
 
         pygame.display.update()
